@@ -10,6 +10,7 @@ import CreatePost from './CreatePost'
 import { setPosts, setSelectedPost } from '@/redux/postSlice'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Button } from './ui/button'
+import SearchDialog from './SearchDialog'
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const LeftSidebar = () => {
     const { likeNotification } = useSelector(store => store.realTimeNotification);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
 
 
     const logoutHandler = async () => {
@@ -45,6 +47,8 @@ const LeftSidebar = () => {
             navigate("/");
         } else if (textType === 'Messages') {
             navigate("/chat");
+        } else if (textType === 'Search') {
+            setSearchOpen(true);
         }
     }
 
@@ -113,6 +117,7 @@ const LeftSidebar = () => {
             </div>
 
             <CreatePost open={open} setOpen={setOpen} />
+            <SearchDialog open={searchOpen} setOpen={setSearchOpen} />
 
         </div>
     )

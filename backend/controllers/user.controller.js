@@ -206,3 +206,29 @@ export const followOrUnfollow = async (req, res) => {
         console.log(error);
     }
 }
+export const searchUsers = async (req, res) => {
+    try {
+        const searchQuery = req.query.query;
+        if (!searchQuery) {
+            return res.status(400).json({
+                message: 'Search query is required',
+                success: false
+            });
+        }
+
+        const users = await User.find({
+            username: { $regex: searchQuery, $options: 'i' }
+        }).select('-password');
+
+        return res.status(200).json({
+            success: true,
+            users
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Error searching users',
+            success: false
+        });
+    }
+};
