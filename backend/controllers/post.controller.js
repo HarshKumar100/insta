@@ -47,7 +47,8 @@ export const addNewPost = async (req, res) => {
 }
 export const getAllPost = async (req, res) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 })
+        const posts = await Post.find()
+            .sort({ createdAt: -1, _id: -1 })
             .populate({ path: 'author', select: 'username profilePicture' })
             .populate({
                 path: 'comments',
@@ -63,6 +64,10 @@ export const getAllPost = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: 'Error fetching posts',
+            success: false
+        });
     }
 };
 export const getUserPost = async (req, res) => {
